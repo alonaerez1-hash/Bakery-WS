@@ -26,10 +26,11 @@
           <label>Password<input id="authPassword" type="password" minlength="8" autocomplete="current-password" required placeholder="At least 8 characters"></label>
           <button id="authSubmit" class="btn primary wide" type="submit">Sign in</button>
           <div id="authMessage" class="form-message" aria-live="polite"></div>
+          <button id="resendConfirmationBtn" class="btn ghost wide" type="button" hidden>Resend confirmation email</button>
         </form>
         <div class="or"><span>or</span></div>
         <button id="previewBtn" class="btn secondary wide">Preview Bakery WS</button>
-        <p class="auth-note">Preview mode is local to this browser. Email + password accounts activate when the Bakery WS backend is connected.</p>
+        <p class="auth-note">Email + password accounts use a confirmation link sent to your inbox. Preview mode stays local to this browser.</p>
       </div>
     </div>
   </section>
