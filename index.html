@@ -7,50 +7,83 @@
   <meta name="description" content="Bakery WS — run orders, recipes, production, inventory and profit in one workspace.">
   <title>Bakery WS</title>
   <link rel="stylesheet" href="styles.css?v=1">
-  <link rel="stylesheet" href="marketing-how-it-works.css?v=1">
+  <link rel="stylesheet" href="marketing-how-it-works.css?v=2">
   <style>.modal[hidden]{display:none!important}</style>
 </head>
 <body>
-  <section id="authScreen" class="auth-screen">
-    <div class="auth-brand"><div class="brand-mark">B</div><strong>Bakery WS</strong></div>
-    <div class="auth-grid">
-      <div class="auth-story">
-        <span class="eyebrow">BUILT FOR INDEPENDENT BAKERS</span>
-        <h1>Know what to bake.<br>Know what to buy.<br><em>Know what you earn.</em></h1>
-        <p>Orders, recipes, production, inventory, pricing and profit — connected in one calm workspace.</p>
-        <div class="flow-line"><span>Order</span><b>→</b><span>Recipe</span><b>→</b><span>Production</span><b>→</b><span>Profit</span></div>
-      </div>
-      <div class="auth-card">
-        <div class="auth-tabs"><button class="active" data-auth-mode="signin">Sign in</button><button data-auth-mode="signup">Create account</button></div>
-        <form id="authForm">
-          <label>Email<input id="authEmail" type="email" autocomplete="email" required placeholder="you@bakery.com"></label>
-          <label>Password<input id="authPassword" type="password" minlength="8" autocomplete="current-password" required placeholder="At least 8 characters"></label>
-          <button id="authSubmit" class="btn primary wide" type="submit">Sign in</button>
-          <div id="authMessage" class="form-message" aria-live="polite"></div>
-          <button id="resendConfirmationBtn" class="btn ghost wide" type="button" hidden>Resend confirmation email</button>
-        </form>
-        <div class="or"><span>or</span></div>
-        <button id="previewBtn" class="btn secondary wide">Preview Bakery WS</button>
-        <p class="auth-note">Email + password accounts use a confirmation link sent to your inbox. Preview mode stays local to this browser.</p>
-      </div>
-    </div>
+  <section id="authScreen" class="auth-screen public-home">
+    <header class="public-header">
+      <a class="auth-brand" href="#top" aria-label="Bakery WS home"><div class="brand-mark">B</div><strong>Bakery WS</strong></a>
+      <nav class="public-nav" aria-label="Public navigation">
+        <a href="#how-it-works">How it works</a>
+        <a href="#account">Sign in</a>
+        <a class="btn primary" href="#account">Start free</a>
+      </nav>
+    </header>
 
-    <section class="marketing-connection" id="how-it-works" aria-labelledby="howItWorksTitle">
-      <div class="marketing-section-head">
-        <span class="marketing-eyebrow">FROM ORDER TO PROFIT</span>
-        <h2 id="howItWorksTitle">Everything is connected.</h2>
-        <p>Bakery WS brings the moving parts of your business together so one order can inform what you make, what you buy and what you earn.</p>
-      </div>
-      <div class="marketing-flow">
-        <div class="marketing-flow-step"><span>1</span><div><small>ORDER</small><strong>Chocolate Cake × 4</strong><p>Due Friday · $320 revenue</p></div></div>
-        <div class="marketing-flow-arrow" aria-hidden="true">→</div>
-        <div class="marketing-flow-step"><span>2</span><div><small>RECIPES</small><strong>Ingredients calculated</strong><p>Flour · butter · chocolate</p></div></div>
-        <div class="marketing-flow-arrow" aria-hidden="true">→</div>
-        <div class="marketing-flow-step"><span>3</span><div><small>PRODUCTION</small><strong>Tasks become clear</strong><p>Bake · fill · decorate · pack</p></div></div>
-        <div class="marketing-flow-arrow" aria-hidden="true">→</div>
-        <div class="marketing-flow-step profit"><span>4</span><div><small>PROFIT</small><strong>$193 estimated</strong><p>Know your numbers before delivery</p></div></div>
-      </div>
-    </section>
+    <main id="top">
+      <section class="public-hero">
+        <div class="auth-story">
+          <span class="eyebrow">BUILT FOR INDEPENDENT BAKERS</span>
+          <h1>Know what to bake.<br>Know what to buy.<br><em>Know what you earn.</em></h1>
+          <p>Orders, recipes, production, inventory, pricing and profit — connected in one calm workspace.</p>
+          <div class="public-hero-actions">
+            <a class="btn primary" href="#account">Start free</a>
+            <a class="btn secondary" href="#how-it-works">See how it works</a>
+          </div>
+          <div class="flow-line"><span>Order</span><b>→</b><span>Recipe</span><b>→</b><span>Production</span><b>→</b><span>Profit</span></div>
+        </div>
+        <div class="home-preview" aria-label="Bakery WS connected workflow preview">
+          <span class="eyebrow">ONE CONNECTED WORKSPACE</span>
+          <h2>One order updates the whole picture.</h2>
+          <div class="home-preview-grid">
+            <div><small>ORDER</small><strong>$320</strong><span>Chocolate Cake × 4</span></div>
+            <div><small>INGREDIENTS</small><strong>3</strong><span>Needs calculated</span></div>
+            <div><small>PRODUCTION</small><strong>4</strong><span>Tasks made clear</span></div>
+            <div class="preview-profit"><small>EST. PROFIT</small><strong>$193</strong><span>Before delivery</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="marketing-connection" id="how-it-works" aria-labelledby="howItWorksTitle">
+        <div class="marketing-section-head">
+          <span class="marketing-eyebrow">FROM ORDER TO PROFIT</span>
+          <h2 id="howItWorksTitle">Everything is connected.</h2>
+          <p>Bakery WS brings the moving parts of your business together so one order can inform what you make, what you buy and what you earn.</p>
+        </div>
+        <div class="marketing-flow">
+          <div class="marketing-flow-step"><span>1</span><div><small>ORDER</small><strong>Chocolate Cake × 4</strong><p>Due Friday · $320 revenue</p></div></div>
+          <div class="marketing-flow-arrow" aria-hidden="true">→</div>
+          <div class="marketing-flow-step"><span>2</span><div><small>RECIPES</small><strong>Ingredients calculated</strong><p>Flour · butter · chocolate</p></div></div>
+          <div class="marketing-flow-arrow" aria-hidden="true">→</div>
+          <div class="marketing-flow-step"><span>3</span><div><small>PRODUCTION</small><strong>Tasks become clear</strong><p>Bake · fill · decorate · pack</p></div></div>
+          <div class="marketing-flow-arrow" aria-hidden="true">→</div>
+          <div class="marketing-flow-step profit"><span>4</span><div><small>PROFIT</small><strong>$193 estimated</strong><p>Know your numbers before delivery</p></div></div>
+        </div>
+      </section>
+
+      <section class="account-section" id="account" aria-labelledby="accountTitle">
+        <div class="account-copy">
+          <span class="eyebrow">YOUR BAKERY WORKSPACE</span>
+          <h2 id="accountTitle">Ready when you are.</h2>
+          <p>Create your account to save your bakery data in the cloud, or sign in to keep working where you left off.</p>
+          <div class="account-points"><span>✓ Email + password</span><span>✓ Free plan available</span><span>✓ Preview without an account</span></div>
+        </div>
+        <div class="auth-card">
+          <div class="auth-tabs"><button class="active" data-auth-mode="signin">Sign in</button><button data-auth-mode="signup">Create account</button></div>
+          <form id="authForm">
+            <label>Email<input id="authEmail" type="email" autocomplete="email" required placeholder="you@bakery.com"></label>
+            <label>Password<input id="authPassword" type="password" minlength="8" autocomplete="current-password" required placeholder="At least 8 characters"></label>
+            <button id="authSubmit" class="btn primary wide" type="submit">Sign in</button>
+            <div id="authMessage" class="form-message" aria-live="polite"></div>
+            <button id="resendConfirmationBtn" class="btn ghost wide" type="button" hidden>Resend confirmation email</button>
+          </form>
+          <div class="or"><span>or</span></div>
+          <button id="previewBtn" class="btn secondary wide">Preview Bakery WS</button>
+          <p class="auth-note">Email + password accounts use a confirmation link sent to your inbox. Preview mode stays local to this browser.</p>
+        </div>
+      </section>
+    </main>
   </section>
 
   <div id="appShell" class="app-shell" hidden>

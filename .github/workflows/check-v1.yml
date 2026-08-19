@@ -37,6 +37,9 @@ jobs:
           done
           grep -q 'lang="en" dir="ltr"' index.html
           grep -q 'Bakery WS' index.html
+          grep -q 'class="auth-screen public-home"' index.html
+          grep -q 'class="public-hero"' index.html
+          grep -q 'id="account"' index.html
           grep -q 'data-view="orders"' index.html
           grep -q 'data-view="customers"' index.html
           grep -q 'data-view="recipes"' index.html
@@ -52,6 +55,11 @@ jobs:
           grep -q '\$193 estimated' index.html
           grep -q 'marketing-how-it-works.css' index.html
           grep -q 'marketing-flow-step.profit' marketing-how-it-works.css
+          grep -q 'public-hero' marketing-how-it-works.css
+          grep -q 'account-section' marketing-how-it-works.css
+          how_line=$(grep -n 'id="how-it-works"' index.html | head -1 | cut -d: -f1)
+          account_line=$(grep -n 'id="account"' index.html | head -1 | cut -d: -f1)
+          test "$how_line" -lt "$account_line"
           grep -q 'marketing-how-it-works.css' .github/workflows/deploy-pages.yml
           grep -q 'Everything is connected.' .github/workflows/deploy-pages.yml
           grep -q 'marketing-flow-step.profit' .github/workflows/deploy-pages.yml
