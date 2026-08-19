@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#173f35">
+  <meta name="description" content="Bakery WS — run orders, recipes, production, inventory and profit in one workspace.">
+  <title>Bakery WS</title>
+  <link rel="stylesheet" href="styles.css?v=1">
+  <style>.modal[hidden]{display:none!important}</style>
+</head>
+<body>
+  <section id="authScreen" class="auth-screen">
+    <div class="auth-brand"><div class="brand-mark">B</div><strong>Bakery WS</strong></div>
+    <div class="auth-grid">
+      <div class="auth-story">
+        <span class="eyebrow">BUILT FOR INDEPENDENT BAKERS</span>
+        <h1>Know what to bake.<br>Know what to buy.<br><em>Know what you earn.</em></h1>
+        <p>Orders, recipes, production, inventory, pricing and profit — connected in one calm workspace.</p>
+        <div class="flow-line"><span>Order</span><b>→</b><span>Recipe</span><b>→</b><span>Production</span><b>→</b><span>Profit</span></div>
+      </div>
+      <div class="auth-card">
+        <div class="auth-tabs"><button class="active" data-auth-mode="signin">Sign in</button><button data-auth-mode="signup">Create account</button></div>
+        <form id="authForm">
+          <label>Email<input id="authEmail" type="email" autocomplete="email" required placeholder="you@bakery.com"></label>
+          <label>Password<input id="authPassword" type="password" minlength="8" autocomplete="current-password" required placeholder="At least 8 characters"></label>
+          <button id="authSubmit" class="btn primary wide" type="submit">Sign in</button>
+          <div id="authMessage" class="form-message" aria-live="polite"></div>
+          <button id="resendConfirmationBtn" class="btn ghost wide" type="button" hidden>Resend confirmation email</button>
+        </form>
+        <div class="or"><span>or</span></div>
+        <button id="previewBtn" class="btn secondary wide">Preview Bakery WS</button>
+        <p class="auth-note">Email + password accounts use a confirmation link sent to your inbox. Preview mode stays local to this browser.</p>
+      </div>
+    </div>
+  </section>
+
+  <div id="appShell" class="app-shell" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-brand"><div class="brand-mark">B</div><div><strong>Bakery WS</strong><small>Business workspace</small></div></div>
+      <nav id="mainNav">
+        <button data-view="dashboard" class="active"><span>⌂</span>Overview</button>
+        <button data-view="orders"><span>◇</span>Orders</button>
+        <button data-view="customers"><span>◎</span>Customers</button>
+        <button data-view="recipes"><span>✦</span>Recipes</button>
+        <button data-view="inventory"><span>▦</span>Inventory</button>
+        <button data-view="production"><span>◫</span>Production</button>
+        <button data-view="profit"><span>↗</span>Profitability</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <button data-view="settings"><span>⚙</span>Settings</button>
+        <div class="account-card"><div class="avatar">BW</div><div><strong id="accountEmail">Preview</strong><small id="planLabel">Free plan</small></div><button id="signOutBtn" title="Sign out">↗</button></div>
+      </div>
+    </aside>
+
+    <main class="workspace">
+      <header class="topbar">
+        <div><span id="viewEyebrow" class="eyebrow">OVERVIEW</span><h1 id="viewTitle">Good morning.</h1></div>
+        <div class="top-actions"><span id="currencyPill" class="pill">USD</span><span id="planPill" class="pill plan">FREE</span><button id="globalAdd" class="btn primary">+ New order</button></div>
+      </header>
+      <section id="viewRoot" class="view-root"></section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal" hidden>
+    <div class="modal-backdrop" data-close-modal></div>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="modal-head"><div><span id="modalKicker" class="eyebrow"></span><h2 id="modalTitle"></h2></div><button class="icon-btn" data-close-modal>×</button></div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js?v=1"></script>
+  <script src="core.js?v=1"></script>
+  <script src="store.js?v=1"></script>
+  <script src="auth.js?v=1"></script>
+  <script src="app.js?v=1"></script>
+</body>
+</html>

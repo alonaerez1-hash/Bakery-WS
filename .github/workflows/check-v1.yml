@@ -18,6 +18,8 @@ jobs:
 
       - name: Check JavaScript syntax
         run: |
+          node --check script.js
+          node --check calculator.js
           node --check core.js
           node --check store.js
           node --check auth.js
@@ -28,50 +30,78 @@ jobs:
       - name: Run business engine tests
         run: node tests/run-tests.js
 
-      - name: Validate app structure
+      - name: Validate exact pricing site and app structure
         shell: bash
         run: |
           set -euo pipefail
-          for file in index.html styles.css marketing-how-it-works.css core.js store.js auth.js app.js config.js .github/workflows/deploy-pages.yml; do
+
+          for file in \
+            index.html pricing.html features.html how-it-works.html for-bakers.html calculator.html \
+            styles.css site-pages.css site-fixes.css script.js calculator.js \
+            app/index.html app/styles.css core.js store.js auth.js app.js config.js \
+            .github/workflows/deploy-pages.yml; do
             test -f "$file"
           done
-          grep -q 'lang="en" dir="ltr"' index.html
+
+          # Public root: copied pricing page structure.
+          grep -q '<body class="site-page" data-page="pricing">' index.html
+          grep -q 'SIMPLE PRICING' index.html
+          grep -q 'Start small. <em>Grow with it.</em>' index.html
+          grep -q 'pricing-page-grid' index.html
+          grep -q 'MOST POPULAR' index.html
+          grep -q '\$19' index.html
+          grep -q 'Before you choose.' index.html
+          grep -q 'compare-table' index.html
+          grep -q 'faq-compact' index.html
+          grep -q 'href="app/"' index.html
           grep -q 'Bakery WS' index.html
-          grep -q 'class="auth-screen public-home"' index.html
-          grep -q 'class="public-hero"' index.html
-          grep -q 'id="account"' index.html
-          grep -q 'data-view="orders"' index.html
-          grep -q 'data-view="customers"' index.html
-          grep -q 'data-view="recipes"' index.html
-          grep -q 'data-view="inventory"' index.html
-          grep -q 'data-view="production"' index.html
-          grep -q 'data-view="profit"' index.html
-          grep -q 'modal\[hidden\].*display:none' index.html
-          grep -q 'resendConfirmationBtn' index.html
-          grep -q 'id="how-it-works"' index.html
-          grep -q 'FROM ORDER TO PROFIT' index.html
-          grep -q 'Everything is connected.' index.html
-          grep -q 'Chocolate Cake × 4' index.html
-          grep -q '\$193 estimated' index.html
-          grep -q 'marketing-how-it-works.css' index.html
-          grep -q 'marketing-flow-step.profit' marketing-how-it-works.css
-          grep -q 'public-hero' marketing-how-it-works.css
-          grep -q 'account-section' marketing-how-it-works.css
-          how_line=$(grep -n 'id="how-it-works"' index.html | head -1 | cut -d: -f1)
-          account_line=$(grep -n 'id="account"' index.html | head -1 | cut -d: -f1)
-          test "$how_line" -lt "$account_line"
-          grep -q 'marketing-how-it-works.css' .github/workflows/deploy-pages.yml
-          grep -q 'Everything is connected.' .github/workflows/deploy-pages.yml
-          grep -q 'marketing-flow-step.profit' .github/workflows/deploy-pages.yml
-          grep -q 'https://alonaerez1-hash.github.io/Bakery-WS/' config.js
+          grep -q 'site-pages.css' index.html
+          grep -q 'script.js' index.html
+
+          # Shared visual assets must stay byte-for-byte identical to the source marketing site.
+          test "$(git hash-object styles.css)" = 'a50fba532e6de7c16d09599771fc2888f153499d'
+          test "$(git hash-object site-pages.css)" = '003ae553dc604fd32209b8c286cabc2ccf4fab74'
+          test "$(git hash-object site-fixes.css)" = 'f4e87678f445577d5304d0d092bad1a99256de59'
+          test "$(git hash-object script.js)" = '498dff8eac1d7d7e5be2b7f0ef0b7a17c3a64833'
+          test "$(git hash-object calculator.js)" = '7f6511a5be88b30ee138cec4f24be7a9e63ea442'
+
+          # Navigation pages copied so the original pricing-site navigation remains functional.
+          grep -q 'data-page="pricing"' pricing.html
+          grep -q 'data-page="features"' features.html
+          grep -q 'data-page="how"' how-it-works.html
+          grep -q 'data-page="bakers"' for-bakers.html
+          grep -q 'data-page="calculator"' calculator.html
+
+          # Actual Bakery WS application remains intact under /app/.
+          grep -q 'lang="en" dir="ltr"' app/index.html
+          grep -q 'Bakery WS' app/index.html
+          grep -q 'authForm' app/index.html
+          grep -q 'resendConfirmationBtn' app/index.html
+          grep -q 'data-view="orders"' app/index.html
+          grep -q 'data-view="customers"' app/index.html
+          grep -q 'data-view="recipes"' app/index.html
+          grep -q 'data-view="inventory"' app/index.html
+          grep -q 'data-view="production"' app/index.html
+          grep -q 'data-view="profit"' app/index.html
+          grep -q 'modal\[hidden\].*display:none' app/index.html
+
+          grep -q 'https://alonaerez1-hash.github.io/Bakery-WS/app/' config.js
           grep -q 'emailRedirectTo:appUrl()' auth.js
-          grep -q "auth.resend" auth.js
-          grep -q "resendConfirmation" auth.js
-          grep -q "otp_expired" auth.js
-          grep -q "recipeCost" core.js
-          grep -q "orderFinancials" core.js
-          grep -q "USD" core.js
-          grep -q "ILS" core.js
-          grep -q "free" core.js
-          grep -q "pro" core.js
-          echo "Bakery WS V1 structure checks passed."
+          grep -q 'auth.resend' auth.js
+          grep -q 'resendConfirmation' auth.js
+          grep -q 'otp_expired' auth.js
+          grep -q 'recipeCost' core.js
+          grep -q 'orderFinancials' core.js
+          grep -q 'USD' core.js
+          grep -q 'ILS' core.js
+          grep -q 'free' core.js
+          grep -q 'pro' core.js
+
+          # Deployment must publish the marketing root and the app route together.
+          grep -q 'pricing.html' .github/workflows/deploy-pages.yml
+          grep -q 'site-pages.css' .github/workflows/deploy-pages.yml
+          grep -q 'app/index.html' .github/workflows/deploy-pages.yml
+          grep -q '_site/app' .github/workflows/deploy-pages.yml
+          grep -q '/app/' .github/workflows/deploy-pages.yml
+
+          echo "Bakery WS exact pricing homepage + app route checks passed."
