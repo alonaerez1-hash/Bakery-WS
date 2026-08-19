@@ -44,6 +44,12 @@ jobs:
           grep -q 'data-view="production"' index.html
           grep -q 'data-view="profit"' index.html
           grep -q 'modal\[hidden\].*display:none' index.html
+          grep -q 'resendConfirmationBtn' index.html
+          grep -q 'https://alonaerez1-hash.github.io/Bakery-WS/' config.js
+          grep -q 'emailRedirectTo:appUrl()' auth.js
+          grep -q "auth.resend" auth.js
+          grep -q "resendConfirmation" auth.js
+          grep -q "otp_expired" auth.js
           grep -q "recipeCost" core.js
           grep -q "orderFinancials" core.js
           grep -q "USD" core.js
