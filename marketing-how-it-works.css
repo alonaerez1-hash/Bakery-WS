@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+
+.marketing-connection{
+  --marketing-cream:#f7f1e9;
+  --marketing-paper:#fffdfa;
+  --marketing-ink:#1f2b28;
+  --marketing-muted:#6d7772;
+  --marketing-deep:#24312e;
+  --marketing-line:#e5ddd3;
+  margin:64px -5vw -48px;
+  padding:110px clamp(22px,6vw,96px);
+  background:var(--marketing-cream);
+  color:var(--marketing-ink);
+  font-family:'DM Sans',sans-serif;
+}
+.marketing-connection *{box-sizing:border-box}
+.marketing-section-head{max-width:760px;margin-bottom:54px}
+.marketing-eyebrow{display:inline-block;font-size:12px;letter-spacing:.18em;font-weight:700;color:#7d8d86;margin-bottom:18px}
+.marketing-section-head h2{font-family:'Playfair Display',serif;letter-spacing:-.035em;font-size:clamp(42px,5vw,70px);line-height:1.05;margin:0 0 20px}
+.marketing-section-head p{font-size:18px;line-height:1.55;color:var(--marketing-muted);margin:0}
+.marketing-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;gap:12px;align-items:stretch}
+.marketing-flow-step{background:#fff;border:1px solid #e4dbd0;border-radius:20px;padding:24px;display:flex;gap:14px;min-width:0}
+.marketing-flow-step>span{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;background:#eee6dd;color:#796b65;font-size:12px;font-weight:700;flex:none}
+.marketing-flow-step small{display:block;font-size:8px;letter-spacing:.13em;color:#9b9993;margin-bottom:8px}
+.marketing-flow-step strong{display:block;font-size:15px}
+.marketing-flow-step p{margin:5px 0 0;color:#8a918e;font-size:12px;line-height:1.55}
+.marketing-flow-step.profit{background:var(--marketing-deep);color:white;border-color:var(--marketing-deep)}
+.marketing-flow-step.profit p{color:#bac4c0}
+.marketing-flow-step.profit>span{background:#fff;color:var(--marketing-deep)}
+.marketing-flow-arrow{display:grid;place-items:center;color:#a79c94;font-size:16px}
+
+@media(max-width:1100px){
+  .marketing-flow{grid-template-columns:1fr 28px 1fr;}
+  .marketing-flow-step:nth-of-type(5){grid-column:1/2}
+}
+@media(max-width:820px){
+  .marketing-connection{margin-top:74px;padding-top:82px;padding-bottom:82px}
+  .marketing-flow{grid-template-columns:1fr;gap:10px}
+  .marketing-flow-arrow{height:24px;transform:rotate(90deg)}
+  .marketing-flow-step:nth-of-type(5){grid-column:auto}
+}
+@media(max-width:520px){
+  .marketing-connection{padding:72px 22px;margin-left:-5vw;margin-right:-5vw}
+  .marketing-section-head{margin-bottom:36px}
+  .marketing-section-head h2{font-size:42px}
+  .marketing-section-head p{font-size:16px}
+  .marketing-flow-step{padding:20px}
+}
