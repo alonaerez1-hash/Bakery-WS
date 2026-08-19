@@ -32,7 +32,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for file in index.html styles.css marketing-how-it-works.css core.js store.js auth.js app.js config.js; do
+          for file in index.html styles.css marketing-how-it-works.css core.js store.js auth.js app.js config.js .github/workflows/deploy-pages.yml; do
             test -f "$file"
           done
           grep -q 'lang="en" dir="ltr"' index.html
@@ -52,6 +52,9 @@ jobs:
           grep -q '\$193 estimated' index.html
           grep -q 'marketing-how-it-works.css' index.html
           grep -q 'marketing-flow-step.profit' marketing-how-it-works.css
+          grep -q 'marketing-how-it-works.css' .github/workflows/deploy-pages.yml
+          grep -q 'Everything is connected.' .github/workflows/deploy-pages.yml
+          grep -q 'marketing-flow-step.profit' .github/workflows/deploy-pages.yml
           grep -q 'https://alonaerez1-hash.github.io/Bakery-WS/' config.js
           grep -q 'emailRedirectTo:appUrl()' auth.js
           grep -q "auth.resend" auth.js

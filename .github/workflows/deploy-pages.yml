@@ -6,6 +6,7 @@ on:
     paths:
       - "index.html"
       - "styles.css"
+      - "marketing-how-it-works.css"
       - "core.js"
       - "store.js"
       - "auth.js"
@@ -42,9 +43,12 @@ jobs:
           set -euo pipefail
           rm -rf _site
           mkdir _site
-          cp index.html styles.css core.js store.js auth.js app.js config.js .nojekyll _site/
+          cp index.html styles.css marketing-how-it-works.css core.js store.js auth.js app.js config.js .nojekyll _site/
           test -f _site/index.html
+          test -f _site/marketing-how-it-works.css
           grep -q 'Bakery WS' _site/index.html
+          grep -q 'id="how-it-works"' _site/index.html
+          grep -q 'marketing-flow-step.profit' _site/marketing-how-it-works.css
           grep -q 'recipeCost' _site/core.js
 
       - name: Upload Pages artifact
@@ -65,7 +69,8 @@ jobs:
           for attempt in $(seq 1 18); do
             body="$(curl -fsSL --max-time 20 "$SITE_URL" || true)"
             core="$(curl -fsSL --max-time 20 "${SITE_URL%/}/core.js?v=1" || true)"
-            if printf '%s' "$body" | grep -q 'Bakery WS' && printf '%s' "$body" | grep -q 'Know what you earn' && printf '%s' "$core" | grep -q 'orderFinancials'; then
+            marketing_css="$(curl -fsSL --max-time 20 "${SITE_URL%/}/marketing-how-it-works.css?v=1" || true)"
+            if printf '%s' "$body" | grep -q 'Bakery WS' && printf '%s' "$body" | grep -q 'Know what you earn' && printf '%s' "$body" | grep -q 'Everything is connected.' && printf '%s' "$body" | grep -q 'id="how-it-works"' && printf '%s' "$core" | grep -q 'orderFinancials' && printf '%s' "$marketing_css" | grep -q 'marketing-flow-step.profit'; then
               success=1
               break
             fi
