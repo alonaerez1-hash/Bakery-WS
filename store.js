@@ -35,9 +35,10 @@
   };
   const clone=x=>JSON.parse(JSON.stringify(x));
   function load(){try{const raw=localStorage.getItem(KEY);if(raw)return{...clone(seed),...JSON.parse(raw)}}catch(e){}return clone(seed)}
-  function save(state){localStorage.setItem(KEY,JSON.stringify(state));return state}
+  function replaceLocal(state){localStorage.setItem(KEY,JSON.stringify(state));return state}
+  function save(state){replaceLocal(state);const s=session();if(s?.mode==='account'&&root.BakeryWSAuth?.saveWorkspace)root.BakeryWSAuth.saveWorkspace(state).catch(err=>console.warn('Cloud save failed',err));return state}
   function reset(){localStorage.removeItem(KEY);return load()}
   function session(){try{return JSON.parse(localStorage.getItem(SESSION_KEY)||'null')}catch(e){return null}}
   function setSession(value){if(value)localStorage.setItem(SESSION_KEY,JSON.stringify(value));else localStorage.removeItem(SESSION_KEY)}
-  root.BakeryWSStore={KEY,SESSION_KEY,load,save,reset,session,setSession,seed:()=>clone(seed)};
+  root.BakeryWSStore={KEY,SESSION_KEY,load,save,reset,session,setSession,replaceLocal,seed:()=>clone(seed)};
 })(typeof globalThis!=='undefined'?globalThis:this);
