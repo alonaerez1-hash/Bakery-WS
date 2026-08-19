@@ -43,6 +43,7 @@ jobs:
           grep -q 'data-view="inventory"' index.html
           grep -q 'data-view="production"' index.html
           grep -q 'data-view="profit"' index.html
+          grep -q 'modal\[hidden\].*display:none' index.html
           grep -q "recipeCost" core.js
           grep -q "orderFinancials" core.js
           grep -q "USD" core.js
