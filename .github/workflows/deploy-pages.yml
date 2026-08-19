@@ -1,0 +1,78 @@
+name: Deploy Bakery WS
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "index.html"
+      - "styles.css"
+      - "core.js"
+      - "store.js"
+      - "auth.js"
+      - "app.js"
+      - "config.js"
+      - ".nojekyll"
+      - ".github/workflows/deploy-pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: bakery-ws-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Prepare app artifact
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir _site
+          cp index.html styles.css core.js store.js auth.js app.js config.js .nojekyll _site/
+          test -f _site/index.html
+          grep -q 'Bakery WS' _site/index.html
+          grep -q 'recipeCost' _site/core.js
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./_site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Verify public Bakery WS app
+        env:
+          SITE_URL: ${{ steps.deployment.outputs.page_url }}
+        run: |
+          set -euo pipefail
+          success=0
+          for attempt in $(seq 1 18); do
+            body="$(curl -fsSL --max-time 20 "$SITE_URL" || true)"
+            core="$(curl -fsSL --max-time 20 "${SITE_URL%/}/core.js?v=1" || true)"
+            if printf '%s' "$body" | grep -q 'Bakery WS' && printf '%s' "$body" | grep -q 'Know what you earn' && printf '%s' "$core" | grep -q 'orderFinancials'; then
+              success=1
+              break
+            fi
+            echo "Bakery WS is not ready yet (attempt $attempt/18)."
+            sleep 10
+          done
+          if [ "$success" -ne 1 ]; then
+            echo "Public Bakery WS smoke test failed: $SITE_URL" >&2
+            exit 1
+          fi
