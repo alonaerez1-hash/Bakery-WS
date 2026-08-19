@@ -1,0 +1,52 @@
+name: Check Bakery WS V1
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check core.js
+          node --check store.js
+          node --check auth.js
+          node --check app.js
+          node --check config.js
+          node --check tests/run-tests.js
+
+      - name: Run business engine tests
+        run: node tests/run-tests.js
+
+      - name: Validate app structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          for file in index.html styles.css core.js store.js auth.js app.js config.js; do
+            test -f "$file"
+          done
+          grep -q 'lang="en" dir="ltr"' index.html
+          grep -q 'Bakery WS' index.html
+          grep -q 'data-view="orders"' index.html
+          grep -q 'data-view="customers"' index.html
+          grep -q 'data-view="recipes"' index.html
+          grep -q 'data-view="inventory"' index.html
+          grep -q 'data-view="production"' index.html
+          grep -q 'data-view="profit"' index.html
+          grep -q "recipeCost" core.js
+          grep -q "orderFinancials" core.js
+          grep -q "USD" core.js
+          grep -q "ILS" core.js
+          grep -q "free" core.js
+          grep -q "pro" core.js
+          echo "Bakery WS V1 structure checks passed."
