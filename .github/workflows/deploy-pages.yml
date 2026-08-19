@@ -5,8 +5,18 @@ on:
     branches: ["main"]
     paths:
       - "index.html"
+      - "pricing.html"
+      - "features.html"
+      - "how-it-works.html"
+      - "for-bakers.html"
+      - "calculator.html"
       - "styles.css"
-      - "marketing-how-it-works.css"
+      - "site-pages.css"
+      - "site-fixes.css"
+      - "script.js"
+      - "calculator.js"
+      - "app/index.html"
+      - "app/styles.css"
       - "core.js"
       - "store.js"
       - "auth.js"
@@ -38,18 +48,43 @@ jobs:
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
-      - name: Prepare app artifact
+      - name: Prepare marketing site and app artifact
+        shell: bash
         run: |
           set -euo pipefail
           rm -rf _site
-          mkdir _site
-          cp index.html styles.css marketing-how-it-works.css core.js store.js auth.js app.js config.js .nojekyll _site/
+          mkdir -p _site/app
+
+          cp index.html pricing.html features.html how-it-works.html for-bakers.html calculator.html \
+             styles.css site-pages.css site-fixes.css script.js calculator.js .nojekyll _site/
+
+          cp app/index.html app/styles.css core.js store.js auth.js app.js config.js _site/app/
+
           test -f _site/index.html
-          test -f _site/marketing-how-it-works.css
-          grep -q 'Bakery WS' _site/index.html
-          grep -q 'id="how-it-works"' _site/index.html
-          grep -q 'marketing-flow-step.profit' _site/marketing-how-it-works.css
-          grep -q 'recipeCost' _site/core.js
+          test -f _site/pricing.html
+          test -f _site/styles.css
+          test -f _site/site-pages.css
+          test -f _site/script.js
+          test -f _site/app/index.html
+          test -f _site/app/styles.css
+          test -f _site/app/core.js
+          test -f _site/app/auth.js
+          test -f _site/app/config.js
+
+          grep -q 'SIMPLE PRICING' _site/index.html
+          grep -q 'Start small.' _site/index.html
+          grep -q 'pricing-page-grid' _site/index.html
+          grep -q 'MOST POPULAR' _site/index.html
+          grep -q '\$19' _site/index.html
+          grep -q 'Before you choose.' _site/index.html
+          grep -q 'pricing-page-grid' _site/site-pages.css
+
+          grep -q 'Bakery WS' _site/app/index.html
+          grep -q 'authForm' _site/app/index.html
+          grep -q 'resendConfirmationBtn' _site/app/index.html
+          grep -q 'data-view="profit"' _site/app/index.html
+          grep -q 'orderFinancials' _site/app/core.js
+          grep -q '/Bakery-WS/app/' _site/app/config.js
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
@@ -60,24 +95,38 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Verify public Bakery WS app
+      - name: Verify public pricing homepage and app
+        shell: bash
         env:
           SITE_URL: ${{ steps.deployment.outputs.page_url }}
         run: |
           set -euo pipefail
           success=0
           for attempt in $(seq 1 18); do
-            body="$(curl -fsSL --max-time 20 "$SITE_URL" || true)"
-            core="$(curl -fsSL --max-time 20 "${SITE_URL%/}/core.js?v=1" || true)"
-            marketing_css="$(curl -fsSL --max-time 20 "${SITE_URL%/}/marketing-how-it-works.css?v=1" || true)"
-            if printf '%s' "$body" | grep -q 'Bakery WS' && printf '%s' "$body" | grep -q 'Know what you earn' && printf '%s' "$body" | grep -q 'Everything is connected.' && printf '%s' "$body" | grep -q 'id="how-it-works"' && printf '%s' "$core" | grep -q 'orderFinancials' && printf '%s' "$marketing_css" | grep -q 'marketing-flow-step.profit'; then
+            home="$(curl -fsSL --max-time 20 "$SITE_URL" || true)"
+            pricing_css="$(curl -fsSL --max-time 20 "${SITE_URL%/}/site-pages.css" || true)"
+            app_home="$(curl -fsSL --max-time 20 "${SITE_URL%/}/app/" || true)"
+            app_core="$(curl -fsSL --max-time 20 "${SITE_URL%/}/app/core.js?v=1" || true)"
+
+            if printf '%s' "$home" | grep -q 'SIMPLE PRICING' \
+              && printf '%s' "$home" | grep -q 'Start small.' \
+              && printf '%s' "$home" | grep -q 'MOST POPULAR' \
+              && printf '%s' "$home" | grep -q '\$19' \
+              && printf '%s' "$home" | grep -q 'Before you choose.' \
+              && printf '%s' "$pricing_css" | grep -q 'pricing-page-grid' \
+              && printf '%s' "$app_home" | grep -q 'Bakery WS' \
+              && printf '%s' "$app_home" | grep -q 'authForm' \
+              && printf '%s' "$app_home" | grep -q 'Know what you earn' \
+              && printf '%s' "$app_core" | grep -q 'orderFinancials'; then
               success=1
               break
             fi
-            echo "Bakery WS is not ready yet (attempt $attempt/18)."
+
+            echo "Bakery WS pricing site/app not ready yet (attempt $attempt/18)."
             sleep 10
           done
+
           if [ "$success" -ne 1 ]; then
-            echo "Public Bakery WS smoke test failed: $SITE_URL" >&2
+            echo "Public Bakery WS pricing site/app smoke test failed: $SITE_URL" >&2
             exit 1
           fi
